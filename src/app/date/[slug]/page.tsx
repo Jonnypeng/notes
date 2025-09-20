@@ -3,6 +3,7 @@
 import Container from "@/app/components/container";
 import { Spin } from "antd";
 import { useEffect, useState } from "react";
+import { XMLParser } from "fast-xml-parser";
 
 export default function Date({
   params,
@@ -22,15 +23,24 @@ export default function Date({
 
   useEffect(() => {
     if (slug) {
-      fetch(`/json/${slug}.json`)
-        .then((res) => {
-          return res.json();
+      fetch(`/xml/${slug}.xml`)
+        .then((res) => res.text())
+        .then((xmlString) => {
+          const parser = new XMLParser();
+          const obj = parser.parse(xmlString);
+
+          // 假设结构是 <root><data><item>xxx</item></data></root>
+          const items = obj?.root?.data?.item || [];
+
+          // 确保是数组
+          const data = Array.isArray(items) ? items : [items];
+          setDaily(data);
         })
-        .then(resData => {
-          setDaily(resData.data)
-        })
+        .catch((error) => {
+          console.error("Error fetching XML:", error);
+        });
     }
-  }, [slug])
+  }, [slug]);
 
 
   return (

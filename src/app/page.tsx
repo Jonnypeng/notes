@@ -9,7 +9,7 @@ export default function Home() {
   const [date, setDate] = useState<string>();
   const router = useRouter();
 
-
+  
   return (
     <Container>
       <div>
