@@ -23,7 +23,7 @@ export default function Date({
 
   useEffect(() => {
     if (slug) {
-      fetch(`/xml/${slug}.xml`)
+      fetch(`/html/${slug}.html`)
         .then((res) => res.text())
         .then((xmlString) => {
           const parser = new XMLParser();
@@ -49,7 +49,7 @@ export default function Date({
         <Spin />
       </div>}
       {daily.length > 0 && <div>
-        <div className="mb-3 text-center">{slug}</div>
+        <div className="mb-3">{slug}</div>
         {
           daily.map((v, i) => (
             <p className="text-base" key={v + i}>{v}</p>
