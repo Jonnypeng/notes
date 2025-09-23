@@ -23,21 +23,15 @@ export default function Date({
 
   useEffect(() => {
     if (slug) {
-      fetch(`/html/${slug}.html`)
-        .then((res) => res.text())
-        .then((xmlString) => {
-          const parser = new XMLParser();
-          const obj = parser.parse(xmlString);
-
-          // 假设结构是 <root><data><item>xxx</item></data></root>
-          const items = obj?.root?.data?.item || [];
-
-          // 确保是数组
+      fetch(`/datas/${slug}.json`)
+        .then((res) => res.json())
+        .then((resData) => {
+          const items = resData?.root?.data?.item || [];
           const data = Array.isArray(items) ? items : [items];
           setDaily(data);
         })
         .catch((error) => {
-          console.error("Error fetching XML:", error);
+          console.error("Error fetching JSON:", error);
         });
     }
   }, [slug]);
